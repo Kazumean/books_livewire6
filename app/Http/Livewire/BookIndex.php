@@ -4,9 +4,12 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Book;
+use Livewire\WithFileUploads;
 
 class BookIndex extends Component
 {
+    // ファイルのアップロードに必要
+    use WithFileUploads;
     // モーダルウィンドウ
     public $liveModal = false;
     // タイトル
@@ -17,6 +20,33 @@ class BookIndex extends Component
     public $price;
     // 詳細
     public $description;
+
+    public function showBookModal()
+    {
+        $this->reset();
+        $this->liveModal = true;
+    }
+
+    public function bookPost()
+    {
+        $this->validate([
+            'title' => 'required',
+            'image' => 'image|max:2048',
+            'price' => 'integer|required',
+            'description' => 'required',
+        ]);
+
+        $image = $this->image->store('public/books');
+
+        Book::create([
+            'title' => $this->title,
+            'image' => $image,
+            'price' => $this->price,
+            'description' => $this->description,
+        ]);
+
+        $this->reset();
+    }
 
     public function render()
     {
