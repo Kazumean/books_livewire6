@@ -17,6 +17,9 @@
                 @enderror
      
                 <x-jet-label for="image" value="Book Image" class="mt-2" />
+                @if ($image)
+                    <img src="{{ $image->temporaryUrl() }}" class="w-48">
+                @endif
                 <input type="file" id="image" wire:model="image" 
                 class="block w-full bg-white border border-gray-400 rounded-md py-2 px-3" />
                 @error('newImage') 
