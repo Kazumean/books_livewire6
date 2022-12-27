@@ -21,12 +21,14 @@ class BookIndex extends Component
     // 詳細
     public $description;
 
+    // 書籍登録のモーダルウィンドウを表示する
     public function showBookModal()
     {
         $this->reset();
         $this->liveModal = true;
     }
 
+    // 書籍の登録をする
     public function bookPost()
     {
         $this->validate([
