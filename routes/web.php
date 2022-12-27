@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\BookIndex;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,5 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/books', BookIndex::class)->name('books.index');
