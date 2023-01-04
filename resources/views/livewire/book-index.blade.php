@@ -3,6 +3,39 @@
         <x-jet-button class="bg-blue-600" wire:click="showBookModal">登録</x-jet-button>
     </div>
 
+    <div class="m-2 p-2">
+        <table class="w-full divide-y divide-gray-200">
+            <thead class="bg-gray50">
+                <tr>
+                    <th class="p-4 text-gray-500 text-left">ID</th>
+                    <th class="p-4 text-gray-500 text-left">Title</th>
+                    <th class="p-4 text-gray-500 text-left">Image</th>
+                    <th class="p-4 text-gray-500 text-left">Price</th>
+                    <th class="p-4 text-gray-500 text-left">Description</th>
+                    <th class="p-4 text-gray-500 text-left">Edit</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <@foreach ($books as $book)
+                    <tr>
+                        <td class="p-4 white-space-nowrap">{{ $book->id }}</td>
+                        <td class="p-4 white-space-nowrap">{{ $book->title }}</td>
+                        <td class="p-4 white-space-nowrap">
+                            <img class="w-12 h-9 rounded" src="{{ Storage::url($book->image) }}" />
+                        </td>
+                        <td class="p-4 white-space-nowrap">{{ $book->price }}</td>
+                        <td class="p-4 white-space-nowrap">{!! nl2br($book->description) !!}</td>
+                        <td class="p-4 text-right text-sm">
+                            編集
+                            削除
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+            <div class="m-2 p-2">{{ $books->links() }}</div>
+    </div>
+
     <x-jet-dialog-modal wire:model="liveModal">
         <x-slot name="title"><h2 class="text-green-600">登録</h2></x-slot>
         <x-slot name="content">

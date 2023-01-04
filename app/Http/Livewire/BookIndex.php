@@ -5,11 +5,14 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Book;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class BookIndex extends Component
 {
     // ファイルのアップロードに必要
     use WithFileUploads;
+    // ページネーションに必要
+    use WithPagination;
     // モーダルウィンドウ
     public $liveModal = false;
     // タイトル
@@ -52,6 +55,9 @@ class BookIndex extends Component
 
     public function render()
     {
-        return view('livewire.book-index');
+        return view('livewire.book-index', [
+            'books' => Book::select('id', 'title', 'price', 'image', 'description')
+            ->orderBy('id', 'DESC')->paginate(3),
+        ]);
     }
 }
