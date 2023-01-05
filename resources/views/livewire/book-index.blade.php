@@ -26,7 +26,7 @@
                         <td class="p-4 white-space-nowrap">{{ $book->price }}</td>
                         <td class="p-4 white-space-nowrap">{!! nl2br($book->description) !!}</td>
                         <td class="p-4 text-right text-sm">
-                            編集
+                            <x-jet-button class="bg-green-600" wire:click="showEditBookModal({{ $book->id }})">編集</x-jet-button>
                             削除
                         </td>
                     </tr>
@@ -37,8 +37,16 @@
     </div>
 
     <x-jet-dialog-modal wire:model="liveModal">
-        <x-slot name="title"><h2 class="text-green-600">登録</h2></x-slot>
+        @if ($editWork)
+        <x-slot name="title"><h2 class="text-green-600">編集</h2></x-slot>          
+        @else
+        <x-slot name="title"><h2 class="text-blue-600">登録</h2></x-slot> 
+        @endif
         <x-slot name="content">
+
+            @if (session()->has('message'))
+                <h3 class="p-2 text-2x1 text-green-600">{{ session('message') }}</h3>    
+            @endif
 
             <form enctype="multipart/form-data">
  
@@ -51,7 +59,12 @@
      
                 <x-jet-label for="image" value="Book Image" class="mt-2" />
                 @if ($image)
-                    <img src="{{ $image->temporaryUrl() }}" class="w-48">
+                    Photo Preview:
+                    <img src="{{ $newImage->temporaryUrl() }}" class="w-48">
+                @else
+                    @if ($oldImage)
+                        <img src="{{ Storage::url($oldImage) }}" class="w-48">
+                    @endif
                 @endif
                 <input type="file" id="image" wire:model="image" 
                 class="block w-full bg-white border border-gray-400 rounded-md py-2 px-3" />
@@ -76,7 +89,11 @@
             </form>
         </x-slot>
         <x-slot name="footer">
-            <x-jet-button wire:click="bookPost">登録実行</x-jet-button>
+            @if ($editWork)
+                <x-jet-button wire:click="updateBook({{ $Id }})">編集実行</x-jet-button>
+            @else
+                <x-jet-button wire:click="bookPost">登録実行</x-jet-button>
+            @endif
         </x-slot>
     </x-jet-dialog-modal>
 </div>

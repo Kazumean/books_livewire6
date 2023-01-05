@@ -23,6 +23,13 @@ class BookIndex extends Component
     public $price;
     // 詳細
     public $description;
+    // ID
+    public $Id;
+    // 変更前の画像
+    public $oldImage;
+    // 編集作業中かどうかを判別する
+    public $editWork = false;
+
 
     // 書籍登録のモーダルウィンドウを表示する
     public function showBookModal()
@@ -30,6 +37,7 @@ class BookIndex extends Component
         $this->reset();
         $this->liveModal = true;
     }
+
 
     // 書籍の登録をする
     public function bookPost()
@@ -51,6 +59,49 @@ class BookIndex extends Component
         ]);
 
         $this->reset();
+    }
+
+
+    // モーダルウィンドウ上に編集したい書籍の情報を表示する
+    public function showEditBookModal($id)
+    {
+        $book = Book::findOrFail($id);
+        $this->Id = $book->id;
+        $this->title = $book->title;
+        $this->oldImage = $book->image;
+        $this->price = $book->price;
+        $this->description = $book->description;
+        $this->editWork = true;
+        $this->liveModal = true;
+    }
+
+
+    // 書籍の情報を更新する
+    public function updateBook($Id)
+    {
+        $this->validate([
+            'title' => 'required',
+            'price' => 'integer|required',
+            'description' => 'required',
+        ]);
+
+        if($this->image) {
+            $image = $this->newImage->store('public/books');
+            Book::where('id', $Id)->update([
+                'title' => $this->title,
+                'image' => $image,
+                'price' => $this->price,
+                'descriptiom' => $this->description,
+            ]);
+        } else {
+            Book::where('id', $Id)->update([
+                'title' => $this->title,
+                'price' => $this->price,
+                'description' => $this->description,
+            ]);
+        }
+
+        session()->flash('message', '更新しました！');
     }
 
     public function render()
