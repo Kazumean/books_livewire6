@@ -30,6 +30,8 @@ class BookIndex extends Component
     public $oldImage;
     // 編集作業中かどうかを判別する
     public $editWork = false;
+    // 検索
+    public $search = '';
 
 
     // 書籍登録のモーダルウィンドウを表示する
@@ -115,9 +117,21 @@ class BookIndex extends Component
 
     public function render()
     {
-        return view('livewire.book-index', [
-            'books' => Book::select('id', 'title', 'price', 'image', 'description')
-            ->orderBy('id', 'DESC')->paginate(3),
-        ]);
+        // return view('livewire.book-index', [
+        //     'books' => Book::select('id', 'title', 'price', 'image', 'description')
+        //     ->orderBy('id', 'DESC')->paginate(3),
+        // ]);
+
+        if($this->search != "") {
+            return view('livewire.book-index', [
+                'books' => Book::where('title', 'like', '%'.$this->search.'%')
+                ->orderBy('id', 'DESC')->paginate(3),
+            ]);
+        } else {
+            return view('livewire.book-index', [
+                'books' => Book::select('id', 'title', 'price', 'image', 'description')
+                ->orderBy('id', 'DESC')->paginate(3),
+            ]);
+        }
     }
 }

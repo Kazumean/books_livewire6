@@ -1,5 +1,6 @@
 <div  class=”max-w-6xl mx-auto”>
     <div class="text-right m-2 p-2">
+        <input type="text" wire:model="search" id="search" class="border-gray-300 rounded-md" placeholder="キーワード" />
         <x-jet-button class="bg-blue-600" wire:click="showBookModal">登録</x-jet-button>
     </div>
 
