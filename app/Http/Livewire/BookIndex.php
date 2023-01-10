@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Book;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Storage;
 
 class BookIndex extends Component
 {
@@ -102,6 +103,14 @@ class BookIndex extends Component
         }
 
         session()->flash('message', '更新しました！');
+    }
+
+    // 書籍を削除する
+    public function deleteBook($id) {
+        $book = Book::findOrFail($id);
+        Storage::delete($book->image);
+        $book->delete();
+        $this->reset();
     }
 
     public function render()

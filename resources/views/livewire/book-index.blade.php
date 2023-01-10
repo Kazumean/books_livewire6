@@ -27,7 +27,7 @@
                         <td class="p-4 white-space-nowrap">{!! nl2br($book->description) !!}</td>
                         <td class="p-4 text-right text-sm">
                             <x-jet-button class="bg-green-600" wire:click="showEditBookModal({{ $book->id }})">編集</x-jet-button>
-                            削除
+                            <x-jet-button class="bg-red-400" wire:click="deleteBook({{ $book->id }})">削除</x-jet-button>
                         </td>
                     </tr>
                 @endforeach
